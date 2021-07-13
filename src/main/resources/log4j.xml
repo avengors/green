@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.avengors.green">
+	<logger name="com.avengors">
 		<level value="info" />
 	</logger>
 	
