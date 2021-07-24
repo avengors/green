@@ -3,9 +3,13 @@ package com.avengors.service.air;
 import com.avengors.entity.air.AirResponse;
 import com.avengors.entity.air.Item;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -64,9 +68,12 @@ public class AirService {
                     private String actionKnack;
                     private String informCause;
                     private String informOverall;
-                    private String informData;
+                    @JsonDeserialize(using = LocalDateDeserializer.class)
+                    private LocalDate informData;
                     private String informGrade;
-                    private String dataTime;
+                    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+                    @JsonFormat(pattern = "yyyy-MM-dd HH시 발표")
+                    private LocalDateTime dataTime;
                 }
             }
         }
@@ -81,15 +88,14 @@ public class AirService {
             List<Item> newItems = items.stream()
 
                     // 가장 최근의 데이터만 필터링
-                    .filter(item -> LocalDateTime.parse(item.dataTime, formatter).equals(latestDateTime))
+                    .filter(item -> item.dataTime.equals(latestDateTime))
 
                     // 05시 이전에 데이터를 요청했을 경우 어제 23시의 데이터를 받아오기 때문에
                     // 오늘, 내일 데이터만 필터링
                     // TODO: 테스트 필요
                     .filter(item -> {
-                        LocalDate informData = LocalDate.parse(item.informData, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                         LocalDate yesterday = LocalDate.now().minusDays(1);
-                        return informData.isAfter(yesterday);
+                        return item.informData.isAfter(yesterday);
                     })
 
                     // 반환할 타입으로 변환
@@ -134,7 +140,7 @@ public class AirService {
                     })
 
                     // 시간순으로 정렬
-                    .sorted(Comparator.comparing(a -> LocalDateTime.parse(a.getDataTime(), formatter)))
+                    .sorted(Comparator.comparing(Item::getDataTime))
 
                     // 리스트로 모음
                     .collect(Collectors.toList());
@@ -144,7 +150,7 @@ public class AirService {
 
         private LocalDateTime getLatestDateTime(DateTimeFormatter formatter, List<ResponseInner.Body.Item> items) {
             return items.stream()
-                    .map(item -> LocalDateTime.parse(item.dataTime, formatter))
+                    .map(item -> item.dataTime)
                     .max(LocalDateTime::compareTo)
                     .orElseThrow(() -> new IllegalArgumentException("`items` is empty."));
         }

@@ -1,5 +1,9 @@
 package com.avengors.entity.air;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -9,8 +13,10 @@ public class Item {
     private String actionKnack;
     private String informCause;
     private String informOverall;
-    private String informData;
-    private String dataTime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate informData;
+    @JsonFormat(pattern = "yyyy-MM-dd HH시 발표")
+    private LocalDateTime dataTime;
     private Map<String, String> informGrade;
 
     public List<String> getImageUrls() {
@@ -53,19 +59,19 @@ public class Item {
         this.informOverall = informOverall;
     }
 
-    public String getInformData() {
+    public LocalDate getInformData() {
         return informData;
     }
 
-    public void setInformData(String informData) {
+    public void setInformData(LocalDate informData) {
         this.informData = informData;
     }
 
-    public String getDataTime() {
+    public LocalDateTime getDataTime() {
         return dataTime;
     }
 
-    public void setDataTime(String dataTime) {
+    public void setDataTime(LocalDateTime dataTime) {
         this.dataTime = dataTime;
     }
 
