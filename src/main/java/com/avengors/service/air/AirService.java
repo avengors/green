@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -81,6 +82,15 @@ public class AirService {
 
                     // 가장 최근의 데이터만 필터링
                     .filter(item -> LocalDateTime.parse(item.dataTime, formatter).equals(latestDateTime))
+
+                    // 05시 이전에 데이터를 요청했을 경우 어제 23시의 데이터를 받아오기 때문에
+                    // 오늘, 내일 데이터만 필터링
+                    // TODO: 테스트 필요
+                    .filter(item -> {
+                        LocalDate informData = LocalDate.parse(item.informData, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        LocalDate yesterday = LocalDate.now().minusDays(1);
+                        return informData.isAfter(yesterday);
+                    })
 
                     // 반환할 타입으로 변환
                     .map(item -> {

@@ -2,8 +2,8 @@ package com.avengors.service.air;
 
 import com.avengors.requestutil.RequestUrlBuilder;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class AirRequestUrlBuilder extends RequestUrlBuilder {
     private final String searchDate;
@@ -21,6 +21,12 @@ public class AirRequestUrlBuilder extends RequestUrlBuilder {
         this.informCode = informCode;
         this.returnType = returnType;
         this.serviceKey = serviceKey;
+
+        LocalDateTime now = LocalDateTime.now();
+        if (now.getHour() < 5) {
+            now = now.minusDays(1);
+        }
+        this.searchDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     @Override
