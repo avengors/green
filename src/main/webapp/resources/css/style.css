@@ -328,3 +328,47 @@ footer {
     .address, .sns { width: 100%;}
     .footerMenu { flex-flow: column; }
 }
+
+/* air */
+
+/* TODO */
+.btn {
+
+}
+
+.active {
+    background-color: green;
+}
+
+.table--dust {
+    color: white;
+    border-collapse: collapse;
+    table-layout: fixed;
+    word-break: keep-all;
+}
+
+.table--dust :is(td, th) {
+    padding: .3em 2em;
+}
+
+.table--dust tbody tr {
+    border-top: 1px solid white;
+}
+
+td[rowspan] {
+    padding: .3em;
+    max-width: 70px;
+    text-align: center;
+}
+
+.lv1 {
+    color: #32a1ff;
+}
+
+.lv2 {
+    color: #00c73c;
+}
+
+.lv3 {
+    color: #fd9b5a;
+}

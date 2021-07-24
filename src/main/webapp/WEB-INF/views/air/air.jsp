@@ -1,12 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ include file="../header.jsp" %>
 
-<div>
-    <button class="dustButton" value="pm10">미세먼지</button>
-    <button class="dustButton" value="pm25">초미세먼지</button>
+<div class="btn--dust-group">
+    <button class="btn btn--dust active" value="pm10">미세먼지</button>
+    <button class="btn btn--dust" value="pm25">초미세먼지</button>
 </div>
 
-<table>
+<table class="table table--dust">
     <thead>
     <tr>
         <th>관측지점</th>
