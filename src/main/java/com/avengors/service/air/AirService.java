@@ -119,13 +119,10 @@ public class AirService {
                         newItem.setInformGrade(gradeMap);
 
                         // imageUrl1, 2, 3 ... 을 리스트로 모음
-                        List<String> urls = new ArrayList<>();
-                        urls.add(item.imageUrl1);
-                        urls.add(item.imageUrl2);
-                        urls.add(item.imageUrl3);
-                        urls.add(item.imageUrl4);
-                        urls.add(item.imageUrl5);
-                        urls.add(item.imageUrl6);
+                        List<String> urls = Arrays.stream(new String[]{item.imageUrl1, item.imageUrl2, item.imageUrl3, item.imageUrl4, item.imageUrl5, item.imageUrl6})
+                                .filter(Objects::nonNull)
+                                .collect(Collectors.toList());
+
                         newItem.setImageUrls(urls);
 
                         // 나머지 필드
