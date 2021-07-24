@@ -5,8 +5,8 @@ import com.avengors.requestutil.RequestUrlBuilder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class AirRequestUrlBuilder implements RequestUrlBuilder {
-    private final String searchDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+public class AirRequestUrlBuilder extends RequestUrlBuilder {
+    private final String searchDate;
     private final String serviceKey;
     private final String returnType; // xml, json
     private final String informCode; // PM10, PM25
@@ -24,7 +24,7 @@ public class AirRequestUrlBuilder implements RequestUrlBuilder {
     }
 
     @Override
-    public String getBaseUrl() {
+    protected String getBaseUrl() {
         return "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMinuDustFrcstDspth";
     }
 

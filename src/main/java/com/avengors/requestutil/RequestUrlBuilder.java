@@ -14,21 +14,21 @@ import java.net.URL;
 import java.util.Map;
 
 
-public interface RequestUrlBuilder {
+public abstract class RequestUrlBuilder {
 
     @JsonIgnore
-    String getBaseUrl();
+    protected abstract String getBaseUrl();
 
     /**
      * Build URL that query string converted from member field.
      * <br>
-     * not {@code private} getter is required.
+     * Only fields with {@code protected} or {@code public} getter are converted.
      *
      * @return {@link URL}
      * @throws MalformedURLException    See {@link java.net.URI#toURL()}
      * @throws IllegalArgumentException See {@link java.net.URI#toURL()}
      */
-    default URL build() throws MalformedURLException {
+    public URL build() throws MalformedURLException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.PROTECTED_AND_PUBLIC);
 
