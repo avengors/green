@@ -2,6 +2,7 @@ package com.avengors.service.air;
 
 import com.avengors.entity.air.AirResponse;
 import com.avengors.entity.air.Item;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -58,12 +59,7 @@ public class AirService {
                 private List<Item> items;
 
                 static class Item {
-                    private String imageUrl1;
-                    private String imageUrl2;
-                    private String imageUrl3;
-                    private String imageUrl4;
-                    private String imageUrl5;
-                    private String imageUrl6;
+                    private List<String> imageUrls = new ArrayList<>();
                     private String informCode;
                     private String actionKnack;
                     private String informCause;
@@ -74,6 +70,13 @@ public class AirService {
                     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
                     @JsonFormat(pattern = "yyyy-MM-dd HH시 발표")
                     private LocalDateTime dataTime;
+
+                    @JsonAnySetter
+                    void collectUrl(String key, String url) {
+                        if (key.startsWith("imageUrl") && url != null) {
+                            imageUrls.add(url);
+                        }
+                    }
                 }
             }
         }
@@ -118,12 +121,7 @@ public class AirService {
 
                         newItem.setInformGrade(gradeMap);
 
-                        // imageUrl1, 2, 3 ... 을 리스트로 모음
-                        List<String> urls = Arrays.stream(new String[]{item.imageUrl1, item.imageUrl2, item.imageUrl3, item.imageUrl4, item.imageUrl5, item.imageUrl6})
-                                .filter(Objects::nonNull)
-                                .collect(Collectors.toList());
-
-                        newItem.setImageUrls(urls);
+                        newItem.setImageUrls(item.imageUrls);
 
                         // 나머지 필드
                         newItem.setActionKnack(item.actionKnack);
