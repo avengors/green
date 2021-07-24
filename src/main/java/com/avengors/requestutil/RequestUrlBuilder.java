@@ -30,7 +30,7 @@ public interface RequestUrlBuilder {
      */
     default URL build() throws MalformedURLException {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NON_PRIVATE);
+        mapper.setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.PROTECTED_AND_PUBLIC);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         Map<String, String> map = mapper.convertValue(this, new TypeReference<Map<String, String>>() {
